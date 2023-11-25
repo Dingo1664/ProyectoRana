@@ -1,4 +1,6 @@
-#include <Adafruit_LiquidCrystal.h>
+#include <LCD.h>
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7);
 int C25p = 0;
 int C50p = 0;
 int C75p = 0;
@@ -12,7 +14,6 @@ unsigned long TotalP2 = 0;
 unsigned long TotalP3 = 0;
 byte Sensortapa = A0;
 
-Adafruit_LiquidCrystal lcd_1(0);
 void Enviar() {
   int reset = 'r';
   if (Serial.available() > 0) {
@@ -47,10 +48,10 @@ void CalculoPuntos() {
   TotalP1 = (Array_Tipo_Casilla[0] * 25) + (Array_Tipo_Casilla[1] * 50) + (Array_Tipo_Casilla[2] * 75) + (Array_Tipo_Casilla[3] * 100) + (Array_Tipo_Casilla[4] * 200);
   Serial.print(" || TOTAL ==> ");
   Serial.println(TotalP1);
-  lcd_1.setCursor(0, 0);
-  lcd_1.print("TotalP1");
-  lcd_1.setCursor(0, 1);
-  lcd_1.print(TotalP1);
+  lcd.setCursor(0, 0);
+  lcd.print("TotalP1");
+  lcd.setCursor(0, 1);
+  lcd.print(TotalP1);
 }
 void LecturasensoresCasillas() {
   const int Retardo_sensor = 200;
@@ -74,7 +75,9 @@ void LecturasensoresCasillas() {
 //}
 
 void setup() {
-  lcd_1.begin(16, 2);  //Inicializacion pantalla lcd
+  //lcd.setBacklightPin(3,POSITIVE);
+  lcd.setBacklight(HIGH);
+  lcd.begin (16,2); 
   Serial.begin(9600);
   //Declaracion sensores
   for (int x = 2; x == 10; x++) {
