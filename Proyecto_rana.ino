@@ -8,7 +8,6 @@ int C100p = 0;
 int C200p = 0;
 int Array_Tipo_Casilla[] = { C25p, C50p, C75p, C100p, C200p };
 
-
 unsigned long TotalP1 = 0;
 unsigned long TotalP2 = 0;
 unsigned long TotalP3 = 0;
@@ -75,7 +74,7 @@ void LecturasensoresCasillas() {
 //}
 
 void setup() {
-  //lcd.setBacklightPin(3,POSITIVE);
+  lcd.setBacklightPin(3,POSITIVE);
   lcd.setBacklight(HIGH);
   lcd.begin (16,2); 
   Serial.begin(9600);
