@@ -13,6 +13,10 @@ unsigned long TotalP2 = 0;
 unsigned long TotalP3 = 0;
 byte Sensortapa = A0;
 
+void lecturaPines(){Serial.print(digitalRead(2));Serial.print(" ");Serial.print(digitalRead(3));Serial.print(" ");Serial.print(digitalRead(4));
+Serial.print(" ");Serial.print(digitalRead(5));Serial.print(" ");Serial.print(digitalRead(6));Serial.print(" ");Serial.print(digitalRead(7));
+Serial.print(" ");Serial.print(digitalRead(9));Serial.print(" ");Serial.println(digitalRead(10));delay(200);}
+
 void Enviar() {
   int reset = 'r';
   if (Serial.available() > 0) {
@@ -54,11 +58,11 @@ void CalculoPuntos() {
 }
 void LecturasensoresCasillas() {
   const int Retardo_sensor = 200;
-  const bool Sensor_25p_ON = digitalRead(8) == HIGH || digitalRead(10) == HIGH;
-  const bool Sensor_50p_ON = digitalRead(6) == HIGH;
-  const bool Sensor_75p_ON = digitalRead(5) == HIGH || digitalRead(7) == HIGH;
-  const bool Sensor_100p_ON = digitalRead(2) == HIGH || digitalRead(3) == HIGH || digitalRead(4) == HIGH;
-  const bool Sensor_200p_ON = digitalRead(9) == HIGH;
+  const bool Sensor_25p_ON = digitalRead(8) || digitalRead(10) ;
+  const bool Sensor_50p_ON = digitalRead(6);
+  const bool Sensor_75p_ON = digitalRead(5) || digitalRead(7);
+  const bool Sensor_100p_ON = digitalRead(2)|| digitalRead(3) || digitalRead(4);
+  const bool Sensor_200p_ON = digitalRead(9);
   const bool Esta_Activo_Sensor[] = { Sensor_25p_ON, Sensor_50p_ON, Sensor_75p_ON, Sensor_100p_ON, Sensor_200p_ON };  //Almacena el estado de los sensores y si estan activos devuelven true
   const int arrayLength = sizeof(Array_Tipo_Casilla) / sizeof(int);
   int Indice_Array_Tipo_Cas[] = { 0, 1, 2, 3, 4 };
@@ -77,7 +81,7 @@ void setup() {
   lcd.setBacklightPin(3,POSITIVE);
   lcd.setBacklight(HIGH);
   lcd.begin (16,2); 
-  Serial.begin(9600);
+  Serial.begin(115200);
   //Declaracion sensores
   for (int x = 2; x == 10; x++) {
     pinMode(x, INPUT);
@@ -88,6 +92,7 @@ void setup() {
 void loop() {
   Enviar();
   LecturasensoresCasillas();
-  MonitoringAll();
+  //MonitoringAll();
   CalculoPuntos();
+ lecturaPines();
 }
