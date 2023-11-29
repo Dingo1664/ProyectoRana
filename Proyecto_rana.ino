@@ -13,9 +13,9 @@ unsigned long TotalP2 = 0;
 unsigned long TotalP3 = 0;
 byte Sensortapa = A0;
 
-void lecturaPines(){Serial.print(digitalRead(2));Serial.print(" ");Serial.print(digitalRead(3));Serial.print(" ");Serial.print(digitalRead(4));
-Serial.print(" ");Serial.print(digitalRead(5));Serial.print(" ");Serial.print(digitalRead(6));Serial.print(" ");Serial.print(digitalRead(7));
-Serial.print(" ");Serial.print(digitalRead(9));Serial.print(" ");Serial.println(digitalRead(10));delay(200);}
+void lecturaPines(){Serial.print(" PIN 2 ==> ");Serial.print(digitalRead(2));Serial.print(" | PIN 3 ==> ");Serial.print(digitalRead(3));Serial.print(" | PIN 4 ==> ");Serial.print(digitalRead(4));
+Serial.print(" | PIN 5 ==> ");Serial.print(digitalRead(5));Serial.print(" | PIN 6 ==> ");Serial.print(digitalRead(6));Serial.print(" | PIN 7 ==> ");Serial.print(digitalRead(7));
+Serial.print("  PIN 8 ==> ");Serial.print(digitalRead(8));Serial.print(" | PIN 9 ==> ");Serial.print(digitalRead(9));Serial.print(" | PIN 10 ==> ");Serial.println(digitalRead(10));delay(200);}
 
 void Enviar() {
   int reset = 'r';
@@ -81,7 +81,7 @@ void setup() {
   lcd.setBacklightPin(3,POSITIVE);
   lcd.setBacklight(HIGH);
   lcd.begin (16,2); 
-  Serial.begin(115200);
+  Serial.begin(9600);
   //Declaracion sensores
   for (int x = 2; x == 10; x++) {
     pinMode(x, INPUT);
@@ -94,5 +94,5 @@ void loop() {
   LecturasensoresCasillas();
   //MonitoringAll();
   CalculoPuntos();
- lecturaPines();
+  lecturaPines();
 }
