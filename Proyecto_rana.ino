@@ -57,7 +57,7 @@ void CalculoPuntos() {
   lcd.print(TotalP1);
 }
 void LecturasensoresCasillas() {
-  const int Retardo_sensor = 200;
+  const int Retardo_sensor = 300;
   const bool Sensor_25p_ON = digitalRead(8) || digitalRead(10) ;
   const bool Sensor_50p_ON = digitalRead(6);
   const bool Sensor_75p_ON = digitalRead(5) || digitalRead(7);
@@ -66,7 +66,7 @@ void LecturasensoresCasillas() {
   const bool Esta_Activo_Sensor[] = { Sensor_25p_ON, Sensor_50p_ON, Sensor_75p_ON, Sensor_100p_ON, Sensor_200p_ON };  //Almacena el estado de los sensores y si estan activos devuelven true
   const int arrayLength = sizeof(Array_Tipo_Casilla) / sizeof(int);
   int Indice_Array_Tipo_Cas[] = { 0, 1, 2, 3, 4 };
-  //if(analogRead(Sensortap)>=500){
+  if(analogRead(Sensortap)>=900){
   for (int indice = 0; indice < arrayLength; indice++) {
     
     if (Esta_Activo_Sensor[indice]) {
@@ -75,13 +75,13 @@ void LecturasensoresCasillas() {
     }
   }
 }  
-//}
+}
 
 void setup() {
   lcd.setBacklightPin(3,POSITIVE);
   lcd.setBacklight(HIGH);
   lcd.begin (16,2); 
-  Serial.begin(9600);
+  Serial.begin(11500);
   //Declaracion sensores
   for (int x = 2; x == 10; x++) {
     pinMode(x, INPUT);
@@ -94,5 +94,5 @@ void loop() {
   LecturasensoresCasillas();
   //MonitoringAll();
   CalculoPuntos();
-  lecturaPines();
+  //lecturaPines();
 }
