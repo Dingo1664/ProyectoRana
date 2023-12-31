@@ -10,10 +10,12 @@ int Array_Tipo_Casilla[] = { C25p, C50p, C75p, C100p, C200p };
 
 int indiceJugadores = 0;
 int x = 0;
-int nJugadores = 0;// se selccionan al meter fiches en la rana;
-unsigned long PuntuacionJugador[8]{ 0, 0, 0, 0, 0, 0, 0, 0 };
-unsigned long TotalJugador[8]{ 0, 0, 0, 0, 0, 0, 0, 0 };
-String Jugador[8]{ "Jugador 1", "Jugador 2", "Jugador 3", "Jugador 4", "Jugador 5", "Jugador 6", "Jugador 7", "Jugador 8" };
+int nJugadores = 0;  // se selccionan al meter fiches en la rana;
+const int maxJugadores = 12;
+unsigned long PuntuacionJugador[maxJugadores]{ 0 };
+unsigned long TotalJugador[maxJugadores]{ 0 };
+String Jugador[maxJugadores]{ "Jugador 1", "Jugador 2", "Jugador 3", "Jugador 4", "Jugador 5", "Jugador 6", "Jugador 7", "Jugador 8", "Jugador 9", "Jugador 10", "Jugador 11", "Jugador 12" };
+
 
 byte Sensortapa = A0;
 
@@ -80,8 +82,9 @@ void CalculoPuntos() {
   lcd.print(Jugador[indiceJugadores]);
   lcd.setCursor(0, 1);
   lcd.print(PuntuacionJugador[indiceJugadores]);
-  lcd.setCursor(5,1);
-  lcd.print("|| ");lcd.print(TotalJugador[indiceJugadores]);
+  lcd.setCursor(5, 1);
+  lcd.print("|| ");
+  lcd.print(TotalJugador[indiceJugadores]);
 }
 void LecturasensoresCasillas() {
   const int Retardo_sensor = 300;
@@ -102,22 +105,48 @@ void LecturasensoresCasillas() {
     }
   }
 }
-void seleccionJugadores(){
- while(analogRead(Sensortapa) >= 900){
+void seleccionJugadores() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Inserta Jugador");
+  while (analogRead(Sensortapa) >= 900) {
+    // lcd.clear();
+    // lcd.clear();
+    // lcd.setCursor(0, 0);
+    // lcd.print("Inserta Jugador");
+    // lcd.setCursor(0, 1);
+    // lcd.print(nJugadores);
+    // lcd.print(" Jugadores");
+    if (digitalRead(9) == HIGH) {
+      if (maxJugadores <= nJugadores) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Max jugadores");
+        lcd.setCursor(0, 1);
+        lcd.print(nJugadores);
+        delay(2000);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Alzar tapa");
+        lcd.setCursor(0, 1);
+        lcd.print("para comenzar");
+        continue;
+      }
+      delay(200);
+      nJugadores++;
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("Inserta Jugador");
       lcd.setCursor(0, 1);
-      lcd.print(nJugadores);lcd.print(" Jugadores");
-      if(digitalRead(9)==HIGH){
-        delay(200);
-      nJugadores++;
-      }
-      //Serial.print(" N jugadores ");Serial.println(nJugadores);
- } 
- while(analogRead(Sensortapa) < 900){
+      lcd.print(nJugadores);
+      lcd.print(" Jugadores");
+    }
 
- }
+    //Serial.print(" N jugadores ");Serial.println(nJugadores);
+  }
+  lcd.clear();
+  while (analogRead(Sensortapa) < 900) {
+  }
 }
 
 void setup() {
@@ -135,25 +164,25 @@ void setup() {
 
 void loop() {
   Enviar();
-  
+
   if (analogRead(Sensortapa) < 900) {
-    
+
     delay(100);
-   
+
     if (x == 1) {
-      TotalJugador[indiceJugadores] =TotalJugador[indiceJugadores] + PuntuacionJugador[indiceJugadores];
-      for (int y = 0; y < 5; y++) {Array_Tipo_Casilla[y] = 0;};
+      TotalJugador[indiceJugadores] = TotalJugador[indiceJugadores] + PuntuacionJugador[indiceJugadores];
+      for (int y = 0; y < 5; y++) { Array_Tipo_Casilla[y] = 0; };
       PuntuacionJugador[indiceJugadores] = 0;
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print(Jugador[indiceJugadores]);
       lcd.setCursor(0, 1);
       lcd.print(PuntuacionJugador[indiceJugadores]);
-       indiceJugadores++;
+      indiceJugadores++;
     }
     lcd.clear();
- x++;
-    if (indiceJugadores >=nJugadores /* 8*/) { indiceJugadores = 0; };
+    x++;
+    if (indiceJugadores >= nJugadores /* 8*/) { indiceJugadores = 0; };
   };
   if (analogRead(Sensortapa) >= 900) {
     x = 0;
